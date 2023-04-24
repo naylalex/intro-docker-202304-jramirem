@@ -7,6 +7,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN mvn verify
+RUN mvn verify 
 
 cmd ["java","-Xmx8m","-Xms8m","-jar","target/words.jar"]
