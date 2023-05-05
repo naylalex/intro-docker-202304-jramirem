@@ -1,0 +1,40 @@
+version: "3.3"
+services:
+  words:
+    build: ./repos/wordsmith/words
+    restart: always
+    container_name: words
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/lib/docker/volumes/words:/data/words
+    networks:
+      - mynet
+  db:
+    build: ./repos/wordsmith/db
+    restart: unless-stopped
+    container_name: postgresdb
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    volumes:
+      - /var/lib/docker/volumes/postgress:/var/lib/postgress
+    networks:
+      - mynet
+    depends_on:
+      - words
+    ports:
+      - "5432:5432"
+
+  web:
+    build: ./repos/wordsmith/web
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - /var/lib/docker/volumes/web:/www/web
+    networks:
+      - mynet
+
+
+
+
